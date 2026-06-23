@@ -1,4 +1,5 @@
 import json
+import time
 
 import pandas as pd
 from confluent_kafka import Consumer, KafkaException
@@ -6,16 +7,16 @@ from confluent_kafka import Consumer, KafkaException
 from consumers.base_consumer import BaseConsumer
 
 
-class AutoCommitConsumer(BaseConsumer):
+class PartitionAssignor(BaseConsumer):
     def __init__(self, group_id):
         super().__init__(group_id)
         self.topics = ['apis.seouldata.rt-bicycle']
 
         conf = {'bootstrap.servers': self.BOOTSTRAP_SERVERS,
                 'group.id': self.group_id,
-                'auto.offset.reset': 'latest',
-                'enable.auto.commit': 'true',
-                'auto.commit.interval.ms': '60000'         # 기본 값: 5000 (5초)
+                'auto.offset.reset': 'earliest',
+                'enable.auto.commit': 'false',
+                'partition.assignment.strategy':'cooperative-sticky'   # range, roundrobin, cooperative-sticky
                 }
 
         self.consumer = Consumer(conf)
@@ -42,11 +43,15 @@ class AutoCommitConsumer(BaseConsumer):
                 print(df[:10])
 
 
+                self.logger.info(f'message 처리 로직 완료, Async Commit 후 2초 대기')
+                # 로직 처리 완료 후 Async Commit 수행
+                self.consumer.commit(asynchronous=True)
+                self.logger.info(f'Commit 완료')
+                time.sleep(2)
+
+
         except KafkaException as e:
-            self.logger.exception("Kafkar 2) to offset BEGINNING (leader epoch -1): fetch failed due to requested offset not available on the broker: Broker: Offset out of range
-%4|1782221984.284|OFFSET|rdkafka#consumer-1| [thrd:main]: apis.seouldata.rt-bicycle [5]: offset reset (at offset 20512 (leader epoch 0), broker 2) to offset BEGINNING (leader epoch -1): fetch failed due to requested offset not available on the broker: Broker: Offset out of range
-^[[B^[[B^[[B^[[B^[[B^C2026-06-23 22:40:53,165 [INFO]:Shutting down cons
-exception occurred during message consumption")
+            self.logger.exception("Kafka exception occurred during message consumption")
 
         except KeyboardInterrupt:  # Ctrl + C 눌러 종료시
             self.logger.info("Shutting down consumer due to keyboard interrupt.")
@@ -57,5 +62,5 @@ exception occurred during message consumption")
 
 
 if __name__ == '__main__':
-    auto_commit_consumer = AutoCommitConsumer('auto_commit_consumer')
-    auto_commit_consumer.poll()
+    partition_assignor = PartitionAssignor('partition_assignor')
+    partition_assignor.poll()

@@ -1,0 +1,84 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1782222159668,
+  "projectRoot": "F:\\datalake\\kafka-consumer",
+  "techStack": {
+    "languages": [
+      {
+        "name": "Python",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "requirements.txt"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": "pip",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "consumers": {
+      "path": "consumers",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782222159581,
+      "keyFiles": [
+        "base_consumer.py"
+      ]
+    },
+    "deploy": {
+      "path": "deploy",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1782222159581,
+      "keyFiles": [
+        "after_install.sh"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "consumers\\ch7_3\\auto_commit_consumer.py",
+      "accessCount": 1,
+      "lastAccessed": 1782222199804,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 1,
+      "lastAccessed": 1782222225310,
+      "type": "directory"
+    },
+    {
+      "path": "consumers\\ch7_2\\poll_consumer.py",
+      "accessCount": 1,
+      "lastAccessed": 1782222236017,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
